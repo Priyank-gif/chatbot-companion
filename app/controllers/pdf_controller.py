@@ -21,6 +21,7 @@ async def process_pdf(file: UploadFile = File(...)):
             out_file.write(content)
     except:
         raise HTTPException(status_code=400, detail="could not save pdf ")
+
     try:
         documents = get_documents_from_pdf(temp_file_path)
         if not documents:

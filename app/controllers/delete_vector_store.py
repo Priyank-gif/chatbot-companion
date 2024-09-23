@@ -16,7 +16,9 @@ async def delete_vector_store():
             shutil.rmtree(vector_db_path, ignore_errors=True)
             return {"message": "Vector store successfully deleted"}
         else:
-            raise HTTPException(status_code=404, detail="Vector store file not found")
+            raise FileNotFoundError("Vector store file not found")
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="Vector store file not found")
     except PermissionError:
         raise HTTPException(status_code=403, detail="Permission denied: Unable to access the file or directory. Check the application's permissions.")
     except Exception as e:
