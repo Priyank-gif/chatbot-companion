@@ -1,4 +1,5 @@
 # config.py
+import json
 import os
 import urllib
 
@@ -17,7 +18,7 @@ temp_file_path = "uploaded_files/uploaded_file.pdf"
 vector_db_path = "faiss_index_constitution"
 
 try:
-    secrets = get_secret()
+    secrets = json.loads(get_secret())
     api_key = secrets['GOOGLE_API_KEY']
     encoded_password = secrets['DB_PASSWORD']
     host = secrets['DB_HOST']
