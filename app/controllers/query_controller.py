@@ -1,8 +1,8 @@
 from datetime import datetime
 
+import langchain
 from fastapi import HTTPException, APIRouter, Depends
 from langchain.chains.qa_with_sources.retrieval import RetrievalQAWithSourcesChain
-from langchain_core.tracers import langchain
 from sqlalchemy.orm import Session
 
 from app import database
@@ -43,7 +43,7 @@ def ask_question(query_model: QueryModel, db: Session = Depends(database.get_db)
     db.commit()
     vector_store = load_faiss_index(embeddings, vector_db_path)
     chain = RetrievalQAWithSourcesChain.from_llm(llm=llm, retriever=vector_store.as_retriever())
-    langchain.debug = True
+    # langchain.debug = True
     result = chain({'question': query}, return_only_outputs=True)
 
     answer = result.get("answer", "No answer found")

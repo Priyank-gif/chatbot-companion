@@ -38,14 +38,14 @@ def get_documents_from_pdf(pdf_file_path):
     return documents
 
 
-def get_text_chunks_langchain(text, chunk_size=200, separators=["\n\n", "\n", "."]):
+def get_text_chunks_langchain(text, chunk_size=1000, separators=["\n\n", "\n", "."]):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, separators=separators)
     docs = [Document(page_content=x, metadata={"source": "text"}) for x in text_splitter.split_text(text)]
     return docs
 
 
 # Function to split text into chunks using RecursiveTextSplitter
-def split_documents(documents, chunk_size=200, separators=["\n\n", "\n", "."]):
+def split_documents(documents, chunk_size=1000, separators=["\n\n", "\n", "."]):
     splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, separators=separators)
     return splitter.split_documents(documents)
 
