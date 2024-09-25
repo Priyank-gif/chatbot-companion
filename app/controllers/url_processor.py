@@ -1,10 +1,12 @@
-
 from fastapi import HTTPException, APIRouter
-from app.models import UrlsModel
+
 from app.config import vector_db_path, embeddings
 from app.faiss_index import create_vector_store, fetch_documents_from_url, split_documents
+from app.models import UrlsModel
 
 router = APIRouter(tags=['URL Process'])
+
+
 @router.post("/process-urls/")
 def process_urls(urls_model: UrlsModel):
     urls = urls_model.urls

@@ -2,3 +2,7 @@
 .env
 venv
 uploaded_files
+faiss_index_constitution
+__pycache__/
+*.pyc
+*.pyo

@@ -1,7 +1,7 @@
+import os
 import shutil
 
 from fastapi import APIRouter, HTTPException
-import os
 
 from app.config import vector_db_path
 
@@ -20,7 +20,7 @@ async def delete_vector_store():
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail="Vector store file not found")
     except PermissionError:
-        raise HTTPException(status_code=403, detail="Permission denied: Unable to access the file or directory. Check the application's permissions.")
+        raise HTTPException(status_code=403,
+                            detail="Permission denied: Unable to access the file or directory. Check the application's permissions.")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
-
