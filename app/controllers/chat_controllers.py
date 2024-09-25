@@ -9,7 +9,7 @@ from app import models, database
 router = APIRouter(tags=['Chat'])
 
 
-@router.get("/retrieve-chat/", response_model=List[models.ChatMessageResponse])
+@router.get("/retrieve-chat/")
 async def retrieve_chat(user_id: int, chat_id: int, db: Session = Depends(database.get_db)):
     messages = db.query(models.ChatMessage).filter(
         models.ChatMessage.user_id == user_id,
@@ -19,7 +19,18 @@ async def retrieve_chat(user_id: int, chat_id: int, db: Session = Depends(databa
     if not messages:
         raise HTTPException(status_code=404, detail="Chat not found")
 
-    return messages
+    response_messages_list = []
+    for message in messages:
+        message_dict = {'chat_order':message.chat_order,
+                        'message_type': message.message_type,
+                        'message': message.message
+                        }
+        response_messages_list.append(message_dict)
+
+    response = {'user_id': user_id,
+                'chat_id': chat_id,
+                'messages': response_messages_list}
+    return response
 
 
 @router.post("/start-chat/", response_model=models.ChatMessageResponse)
