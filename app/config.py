@@ -23,6 +23,11 @@ try:
     encoded_password = secrets['DB_PASSWORD']
     host = secrets['DB_HOST']
     name = secrets['DB_NAME']
+
+    os.environ['GOOGLE_API_KEY'] = secrets.get('GOOGLE_API_KEY', '')
+    os.environ['DB_PASSWORD'] = secrets.get('DB_PASSWORD', '')
+    os.environ['DB_HOST'] = secrets.get('DB_HOST', '')
+    os.environ['DB_NAME'] = secrets.get('DB_NAME', '')
 except:
     api_key=os.getenv('GOOGLE_API_KEY')
     encoded_password = urllib.parse.quote(os.getenv('DB_PASSWORD'))
@@ -30,7 +35,7 @@ except:
     name = os.getenv('DB_NAME')
 
 embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
-llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", google_api_key=api_key)
+llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash")
 
 # Database details
 
