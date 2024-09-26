@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 
 import langchain
@@ -15,6 +16,9 @@ router = APIRouter(tags=['Ask Question'])
 
 @router.post("/ask-question/")
 def ask_question(query_model: QueryModel, db: Session = Depends(database.get_db)):
+    if not os.path.exists(vector_db_path):
+        raise HTTPException(status_code=404, detail='vector db not initialized')
+
     query = query_model.query
     if not query:
         raise HTTPException(status_code=400, detail="Query is empty")
