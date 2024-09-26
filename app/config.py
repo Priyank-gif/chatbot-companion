@@ -19,20 +19,23 @@ vector_db_path = "faiss_index_constitution"
 
 try:
     secrets = json.loads(get_secret())
-    api_key = secrets.get('GOOGLE_API_KEY', '')
-    os.environ['GOOGLE_API_KEY'] = api_key
+    api_key = secrets['GOOGLE_API_KEY']
     encoded_password = secrets['DB_PASSWORD']
     host = secrets['DB_HOST']
     name = secrets['DB_NAME']
-except Exception as e:
-    print(f'Exception occurred while configuring env: {e}')
-    api_key = os.getenv('GOOGLE_API_KEY')
+
+    os.environ['GOOGLE_API_KEY'] = secrets.get('GOOGLE_API_KEY', '')
+    os.environ['DB_PASSWORD'] = secrets.get('DB_PASSWORD', '')
+    os.environ['DB_HOST'] = secrets.get('DB_HOST', '')
+    os.environ['DB_NAME'] = secrets.get('DB_NAME', '')
+except:
+    api_key=os.getenv('GOOGLE_API_KEY')
     encoded_password = urllib.parse.quote(os.getenv('DB_PASSWORD'))
     host = os.getenv('DB_HOST')
     name = os.getenv('DB_NAME')
 
 embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
-llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", google_api_key=api_key)
+llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash")
 
 # Database details
 

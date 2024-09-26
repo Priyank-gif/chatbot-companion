@@ -190,8 +190,6 @@ resource "aws_launch_template" "app_launch_template" {
               echo "Git repo cloning complete"
               sleep 5
               cd /home/ubuntu/chatbot-companion
-              git checkout tharun
-              git pull
               sudo chmod +x deployment/*
               ./deployment/env_init.sh
               ./deployment/run_app.sh

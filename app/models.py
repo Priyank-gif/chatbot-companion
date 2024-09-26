@@ -2,7 +2,7 @@
 from datetime import datetime
 
 from pydantic import BaseModel, Field
-from sqlalchemy import Column, Integer, String, Text, TIMESTAMP, func
+from sqlalchemy import Column, Integer, String, Text, TIMESTAMP, func, ForeignKeyConstraint, PrimaryKeyConstraint
 from sqlalchemy.ext.declarative import declarative_base
 from typing_extensions import List
 
@@ -39,20 +39,6 @@ class ChatSessionResponse(BaseModel):
 Base = declarative_base()
 
 
-class ChatMessage(Base):
-    __tablename__ = 'chat_messages'
-
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, index=True)
-    chat_id = Column(Integer, index=True)
-    message_type = Column(String, index=True)
-    chat_order = Column(Integer, index=True)
-    message = Column(Text)
-
-    def __repr__(self):
-        return f"<ChatMessage(user_id={self.user_id}, chat_id={self.chat_id}, message_type={self.message_type}, chat_order={self.chat_order}, message='{self.message}')>"
-
-
 class ChatSession(Base):
     __tablename__ = 'chat_sessions'
 
@@ -62,3 +48,21 @@ class ChatSession(Base):
 
     def __repr__(self):
         return f"<ChatSession(user_id={self.user_id}, chat_id={self.chat_id})>"
+
+
+class ChatMessage(Base):
+    __tablename__ = 'chat_messages'
+
+    user_id = Column(Integer, index=True)
+    chat_id = Column(Integer, index=True)
+    message_type = Column(String, index=True)
+    chat_order = Column(Integer, index=True)
+    message = Column(Text)
+
+    __table_args__ = (
+        PrimaryKeyConstraint('user_id', 'chat_id', 'chat_order'),
+        {},
+    )
+
+    def __repr__(self):
+        return f"<ChatMessage(user_id={self.user_id}, chat_id={self.chat_id}, message_type={self.message_type}, chat_order={self.chat_order}, message='{self.message}')>"

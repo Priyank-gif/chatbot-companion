@@ -33,7 +33,7 @@ async def retrieve_chat(user_id: int, chat_id: int, db: Session = Depends(databa
     return response
 
 
-@router.post("/start-chat/", response_model=models.ChatMessageResponse)
+@router.post("/start-chat/")
 async def start_chat(user_id: int, db: Session = Depends(database.get_db)):
     # Create a new chat session in the database
     db_chat_session = models.ChatSession(user_id=user_id)
@@ -54,8 +54,16 @@ async def start_chat(user_id: int, db: Session = Depends(database.get_db)):
     )
     db.add(db_message)
     db.commit()
-
-    return db_message
+    response_messages_list=[]
+    message_dict = {'chat_order': db_message.chat_order,
+                    'message_type': db_message.message_type,
+                    'message': db_message.message
+                    }
+    response_messages_list.append(message_dict)
+    response = {'user_id': db_message.user_id,
+                'chat_id': db_message.chat_id,
+                'messages': response_messages_list}
+    return response
 
 
 @router.delete("/delete-chat/")
