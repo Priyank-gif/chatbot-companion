@@ -40,7 +40,7 @@ def ask_question(query_model: QueryModel, db: Session = Depends(database.get_db)
         user_id=query_model.user_id,
         chat_id=query_model.chat_id,
         message_type="human",
-        chat_order=query_model.chat_order + 1,
+        chat_order=query_model.chat_order,
         message=query_model.query
     )
     db.add(db_message)
@@ -57,7 +57,7 @@ def ask_question(query_model: QueryModel, db: Session = Depends(database.get_db)
         user_id=query_model.user_id,
         chat_id=query_model.chat_id,
         message_type="ai",
-        chat_order=query_model.chat_order + 2,  # Increment to keep order
+        chat_order=query_model.chat_order + 1,  # Increment to keep order
         message=answer
     )
     db.add(db_message)
@@ -67,5 +67,5 @@ def ask_question(query_model: QueryModel, db: Session = Depends(database.get_db)
         "sources": sources.split("\n") if sources else [],
         "user_id": query_model.user_id,
         "chat_id": query_model.chat_id,
-        "chat_order": query_model.chat_order + 2
+        "chat_order": query_model.chat_order + 1
     }
