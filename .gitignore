@@ -3,6 +3,11 @@
 venv
 uploaded_files
 faiss_index_constitution
-__pycache__/
+__pycache__
 *.pyc
 *.pyo
+app/__pycache__/
+app/controllers/__pycache__/
+terraform/.terraform
+terraform/.terraform.lock.hcl
+terraform/terraform.tfstate*
