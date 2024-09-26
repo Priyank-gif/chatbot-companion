@@ -17,8 +17,3 @@ curl -sS https://bootstrap.pypa.io/get-pip.py | sudo python3.10
 
 # Verify installation
 python3 --version
-
-# Clone repo
-git clone https://github.com/Priyank-gif/chatbot-companion.git /home/ubuntu/chatbot-companion
-echo "Git repo cloning complete"
-sleep 5

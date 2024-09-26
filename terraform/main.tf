@@ -61,23 +61,6 @@ resource "aws_iam_instance_profile" "ec2_instance_profile" {
   role = aws_iam_role.ec2_role.name
 }
 
-# data "aws_subnets" "public_subnets" {
-#   filter {
-#     name = "vpc-id"
-#     values = [data.aws_vpc.default.id]
-#   }
-#
-#   filter {
-#     name = "subnet-type"
-#     values = ["public"]
-#   }
-# }
-
-# External file for tags (tags.tfvars)
-# variable "common_tags" {
-#   type = map(string)
-# }
-
 # Generate a random ID for conflict safety
 resource "random_id" "resource_id" {
   byte_length = 4
@@ -200,10 +183,16 @@ resource "aws_launch_template" "app_launch_template" {
   # Clone Git repo and start Python app
   user_data = base64encode(<<-EOF
               #!/bin/bash
+              sudo apt update -y
+              sudo apt install git -y
+              # Clone repo
+              git clone https://github.com/Priyank-gif/chatbot-companion.git /home/ubuntu/chatbot-companion
+              echo "Git repo cloning complete"
+              sleep 5
               cd /home/ubuntu/chatbot-companion
               git checkout tharun
               git pull
-              sudo chmod +x deployment/
+              sudo chmod +x deployment/*
               ./deployment/env_init.sh
               ./deployment/run_app.sh
               EOF
@@ -216,9 +205,9 @@ resource "aws_launch_template" "app_launch_template" {
 
 # Auto Scaling Group for Canary Deployment
 resource "aws_autoscaling_group" "app_asg" {
-  desired_capacity = 1
-  max_size         = 3
-  min_size         = 1
+  desired_capacity = 0
+  max_size         = 2
+  min_size         = 0
   launch_template {
     id      = aws_launch_template.app_launch_template.id
     version = "$Latest"
