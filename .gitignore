@@ -8,3 +8,6 @@ __pycache__
 *.pyo
 app/__pycache__/
 app/controllers/__pycache__/
+terraform/.terraform
+terraform/.terraform.lock.hcl
+terraform/terraform.tfstate*

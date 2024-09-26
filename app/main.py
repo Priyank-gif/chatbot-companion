@@ -22,6 +22,11 @@ def read_root():
     return RedirectResponse(url="/docs")
 
 
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}
+
+
 app.include_router(pdf_controller.router)
 app.include_router(query_controller.router)
 app.include_router(url_processor.router)
