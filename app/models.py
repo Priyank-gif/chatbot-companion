@@ -1,5 +1,6 @@
 # models.py
 from datetime import datetime
+from typing import Optional
 
 from pydantic import BaseModel, Field
 from sqlalchemy import Column, Integer, String, Text, TIMESTAMP, func, ForeignKeyConstraint, PrimaryKeyConstraint
@@ -34,6 +35,7 @@ class ChatSessionResponse(BaseModel):
     user_id: int
     chat_id: int
     last_updated: datetime
+    chat_header: Optional[str]=None
 
 
 Base = declarative_base()
@@ -45,6 +47,7 @@ class ChatSession(Base):
     user_id = Column(Integer, index=True)
     chat_id = Column(Integer, primary_key=True, index=True)
     last_updated = Column(TIMESTAMP, default=func.now())
+    chat_header = Column(Text)
 
     def __repr__(self):
         return f"<ChatSession(user_id={self.user_id}, chat_id={self.chat_id})>"
