@@ -33,6 +33,8 @@ def ask_question(query_model: QueryModel, db: Session = Depends(database.get_db)
 
     # Update last_updated field
     chat_session.last_updated = datetime.utcnow()
+    if int(query_model.chat_order)==2:
+        chat_session.chat_header=query_model.query[:30] if len(query_model.query) > 30 else query_model.query
     db.commit()
 
     # Store the query in the database
