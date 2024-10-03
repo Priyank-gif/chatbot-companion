@@ -45,6 +45,7 @@ def ask_question(query_model: QueryModel, db: Session = Depends(database.get_db)
         chat_order=query_model.chat_order,
         message=query_model.query
     )
+    
     db.add(db_message)
     db.commit()
     vector_store = load_faiss_index(embeddings, vector_db_path)
