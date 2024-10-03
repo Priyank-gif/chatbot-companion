@@ -36,7 +36,7 @@ async def retrieve_chat(user_id: int, chat_id: int, db: Session = Depends(databa
 @router.post("/start-chat/")
 async def start_chat(user_id: int, db: Session = Depends(database.get_db)):
     # Create a new chat session in the database
-    db_chat_session = models.ChatSession(user_id=user_id)
+    db_chat_session = models.ChatSession(user_id=user_id, chat_header=None)
     db.add(db_chat_session)
     db.commit()
     db.refresh(db_chat_session)

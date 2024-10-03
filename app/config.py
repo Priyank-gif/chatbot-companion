@@ -38,5 +38,4 @@ embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
 llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash")
 
 # Database details
-
 SQLALCHEMY_DATABASE_URL = f"postgresql://postgres:{encoded_password}@{host}/{name}"

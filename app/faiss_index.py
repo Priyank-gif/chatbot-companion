@@ -45,7 +45,7 @@ def get_text_chunks_langchain(text, chunk_size=1000, separators=["\n\n", "\n", "
 
 
 # Function to split text into chunks using RecursiveTextSplitter
-def split_documents(documents, chunk_size=1000, separators=["\n\n", "\n", "."]):
+def split_documents(documents, chunk_size=300, separators=["\n\n", "\n \n"]):
     splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, separators=separators)
     return splitter.split_documents(documents)
 

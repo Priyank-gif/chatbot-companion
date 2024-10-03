@@ -33,6 +33,8 @@ def ask_question(query_model: QueryModel, db: Session = Depends(database.get_db)
 
     # Update last_updated field
     chat_session.last_updated = datetime.utcnow()
+    if int(query_model.chat_order)==2:
+        chat_session.chat_header=query_model.query[:30] if len(query_model.query) > 30 else query_model.query
     db.commit()
 
     # Store the query in the database
@@ -40,9 +42,10 @@ def ask_question(query_model: QueryModel, db: Session = Depends(database.get_db)
         user_id=query_model.user_id,
         chat_id=query_model.chat_id,
         message_type="human",
-        chat_order=query_model.chat_order + 1,
+        chat_order=query_model.chat_order,
         message=query_model.query
     )
+    
     db.add(db_message)
     db.commit()
     vector_store = load_faiss_index(embeddings, vector_db_path)
@@ -57,7 +60,7 @@ def ask_question(query_model: QueryModel, db: Session = Depends(database.get_db)
         user_id=query_model.user_id,
         chat_id=query_model.chat_id,
         message_type="ai",
-        chat_order=query_model.chat_order + 2,  # Increment to keep order
+        chat_order=query_model.chat_order + 1,  # Increment to keep order
         message=answer
     )
     db.add(db_message)
@@ -67,5 +70,5 @@ def ask_question(query_model: QueryModel, db: Session = Depends(database.get_db)
         "sources": sources.split("\n") if sources else [],
         "user_id": query_model.user_id,
         "chat_id": query_model.chat_id,
-        "chat_order": query_model.chat_order + 2
+        "chat_order": query_model.chat_order + 1
     }
