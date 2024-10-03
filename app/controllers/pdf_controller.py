@@ -34,7 +34,7 @@ async def process_pdf(file: UploadFile = File(...)):
         # print(docs)# Assuming split_documents can handle a list of texts
         # for doc in docs:
         #     print(len(doc.page_content))
-        # create_vector_store(docs, vector_db_path, embeddings)
+        create_vector_store(docs, vector_db_path, embeddings)
         return {"message": "PDF processed and vector store created"}
 
     except Exception as e:
